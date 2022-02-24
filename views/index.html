@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <h1>Index Page</h1>
+            <span>
+                <a href="/logout">Logout</a>
+                
+            </span>
+            <span><a href="/new-role">Create Role</a></span>
+
+        </div>
+
+        <div class="">
+            <table>
+                <thead>
+                    <th scope="col">#</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Role</th>
+                </thead>
+                <tbody>
+                    {{range $index, $user := .}}
+                    <tr>
+                        <th scope="row">{{$index}}</th>
+                        <td>{{$user.Email}}</td>
+                        <td>{{$user.Name}}</td>
+                        <td>{{$user.Role}}</td>
+                        <td>
+                            <a href="/">Update</a>
+                            <button id="{{$user.Email}}" class="deleteBtn">Delete</button>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js'></script>
+    <script>
+        var dltBtns = [...document.getElementsByClassName('deleteBtn')]
+        dltBtns.forEach(element => {
+            console.log(element)
+            element.onclick = function() {
+                console.log(this)
+                $.ajax({
+                    url: '/delete-user/' + this.id,
+                    method: 'DELETE',
+                    success: function(data) {
+                        window.location.reload();
+                    }
+                })
+
+            }
+        });
+        
+    </script>
+</body>
+</html>
